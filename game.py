@@ -17,8 +17,15 @@ class Enemy:
         self.attack = attack
         self.alive = True
 
-    def take_damage(self, damage):
-        self.health -= damage
+    def enemy_take_damage(self):
+        enemy_choice.health -= player.attack
+        if enemy_choice.health == 0:
+            enemy_choice.alive = False
+
+    def enemy_attack(self):
+        print_wbw(f"{self.name} attacks you!")
+        Player.player_take_damage(self.attack)
+        print_wbw(f"{self.name} dealt {self.attack} hit points to you!")
 
 class Player:
     def __init__(self, name, health, items, weapon):
@@ -28,17 +35,19 @@ class Player:
         self.weapon = weapon
         self.alive = True
 
-    def take_damage(self, damage):
-        self.health -= damage
+    def player_take_damage(self):
+        player.health -= enemy_choice.attack
+        if player.health == 0:
+            self.alive = False
 
-    def attack(self, damage):
+    def player_attack(self):
         print_wbw(f"You attack using {self.weapon}!")
-        self.enemy.take_damage(damage)
-        print_wbw(f"You have dealt {damage} hit points!")
+        enemy_choice.enemy_take_damage()
+        print_wbw(f"You have dealt {self.attack} hit points!")
 
     def select_and_use_item(self):
-        print_wbw(f"{self.name}, choose an item to use for healing:")
-        for index, (item, hp) in enumerate(self.items, 1):
+        print_wbw(f"{self.name}, eat something to heal!:")
+        for index, (item, hp) in enumerate(self.items.items(), 1):
             print(f"{index}: {item} - {hp} HP")
 
         while True:
@@ -66,16 +75,14 @@ class Player:
         print_wbw(random.choice(funny_phrases))
 
     def actions(self):
-        self.attack = 0
-        self.defense = 0
-        self.item = []
+        self.attack = food_weapons[self.weapon]
         self.option = ["1. Attack", "2. Special Item", "3. Run"]
         print_wbw("Actions:\n")
         for option in self.option:
             print(option)
         selection = input("What will you do?:\n")
         if selection == "Attack" or selection == "1":
-            Player.attack(self)
+            Player.player_attack(self)
         elif selection == "Special Item" or selection == "2":
             Player.select_and_use_item(self)
         elif selection == "Run" or selection == "3":
@@ -195,12 +202,12 @@ while True:
     except ValueError:
         print("Please enter a number :(")
 
-while player.alive and enemy_choice.alive:
+while player.health > 0 and enemy_choice.health > 0:
     player.actions()
     if enemy_choice.alive:
-        enemy_choice.attack(player)
+        enemy_choice.enemy_attack()
 
-if player.alive:
+if player.health > 0 and enemy_choice.health <= 0:
     print_wbw("Congratulations! You defeated the enemy!")
-else:
+elif enemy_choice.health > 0 and player.health <= 0:
     print_wbw("Oh no! The enemy has defeated you. Better luck next time!")
