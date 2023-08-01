@@ -91,9 +91,11 @@ class Player:
 # General items and behaviour of the game:
 
 enemies = [
-    Enemy("Gooey Glop", health=80, attack=15),
-    Enemy("Toxic Tater", health=100, attack=20),
-    Enemy("Sugary Slurper", health=70, attack=25)
+    Enemy("Burger Basher", health=80, attack=15),
+    Enemy("Pasta Pummeler", health=100, attack=20),
+    Enemy("Sushi Smasher", health=70, attack=25),
+    Enemy("Taco Terrorizer", health=90, attack=18),
+    Enemy("Pizza Punisher", health=85, attack=22)
 ]
 
 def select_enemy():
