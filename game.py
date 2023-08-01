@@ -1,4 +1,11 @@
-import random
+import random, time
+
+def print_wbw(text, delay=0.3):
+    words = text.split()
+    for word in words:
+        print(word, end=' ', flush=True)
+        time.sleep(delay)
+    print()
 
 food_weapons = {
     "Mexico": {
@@ -42,7 +49,7 @@ class Character:
 def attack(attacker, defender):
     damage = random.randint(attacker.attack // 2, attacker.attack)
     defender.take_damage(damage)
-    print(f"{attacker.name} attacks {defender.name} and deals {damage} damage.")
+    print_wbw(f"{attacker.name} attacks {defender.name} and deals {damage} damage.")
 
 class Enemy:
     def __init__(self, name, health, attack):
@@ -57,7 +64,7 @@ class Enemy:
         return self.health > 0
 
 
-print("Welcome to culinary battles!")
+print_wbw("Welcome to culinary battles!")
 
 player_name = input("What is your name?: ")
 player_health = int(input("What is your age?: ")) * 4
@@ -95,3 +102,7 @@ def select_enemy():
         except ValueError:
             print("Invalid input. Please enter a number.")
 
+print("You encounter some enemies! Here are the enemies:")
+print()
+print_wbw(f"{', '.join(enemy.name for enemy in enemies)}")
+select_enemy()
